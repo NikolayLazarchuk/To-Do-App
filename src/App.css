@@ -80,3 +80,10 @@
   border-radius: 10px;
   background-color: rgb(102, 244, 107);
 }
+.text-decoration-line-through {
+  text-decoration: line-through;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}

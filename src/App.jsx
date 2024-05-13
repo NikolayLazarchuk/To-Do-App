@@ -1,29 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { ToDoItem } from "./components/ToDoItem";
 
 const myTodo = [
-  { text: "To do  1" },
-  { text: "To do  2" },
-  { text: "To do  3" },
+  { id: 1, text: "Завдання  1" },
+
 ];
 
 function App() {
   const [content, setContent] = useState(myTodo);
   const [inputValue, setInputValue] = useState("");
 
-  
-  function deleteElement(index) {                                     // Функція для видалення елемента зі списку справ
-    const updatedContent = content.filter((_, i) => i !== index);     // Створення нового масиву, в якому видаляється елемент з певним індексом 
-    setContent(updatedContent);                                       // Оновлення стану content
+  function deleteElement(id) {
+    const updatedContent = content.filter((item) => item.id !== id);
+    setContent(updatedContent);
   }
 
   function addElement() {
     if (inputValue.trim() === "") {
-      return;                                                         // Якщо порожній рядок, не робимо нічого
+      return;
     }
-    const newElement = { text: inputValue };
-    console.info(newElement);
+    const newElement = { id: Date.now(), text: inputValue }; 
     setContent([...content, newElement]);
     setInputValue("");
   }
@@ -31,19 +28,21 @@ function App() {
   return (
     <div className="App">
       <div className="input-container">
-      <input
-        value={inputValue}
-        onChange={(event) => setInputValue(event.target.value)}
-        className="my-input"
-        type="text"
-      />
-      <button onClick={addElement} className="add-button">Add card</button>
+        <input
+          value={inputValue}
+          onChange={(event) => setInputValue(event.target.value)}
+          className="my-input"
+          type="text"
+        />
+        <button onClick={addElement} className="add-button">
+          Add card
+        </button>
       </div>
-      {content.map((item, index) => (
+      {content.map((item) => (
         <ToDoItem
-          key={index}
+          key={item.id}
           fromText={item.text}
-          onDelete={() => deleteElement(index)}
+          onDelete={() => deleteElement(item.id)}
         />
       ))}
     </div>
