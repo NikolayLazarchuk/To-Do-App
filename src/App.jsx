@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { ToDoItem } from "./components/ToDoItem";
 
-const myTodo = [
-  { id: 1, text: "Завдання  1" },
-
-];
+// Завантажуємо збережені завдання з localStorage
+const retrivCardFromLocalStorage = () => {
+  const savedTodos = localStorage.getItem("todos");
+  return savedTodos ? JSON.parse(savedTodos) : [];
+};
 
 function App() {
-  const [content, setContent] = useState(myTodo);
+  const [content, setContent] = useState(retrivCardFromLocalStorage());
   const [inputValue, setInputValue] = useState("");
+
+  // Зберігаємо завдання в localStorage при зміні content
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(content));
+  }, [content]);
 
   function deleteElement(id) {
     const updatedContent = content.filter((item) => item.id !== id);
@@ -20,7 +26,7 @@ function App() {
     if (inputValue.trim() === "") {
       return;
     }
-    const newElement = { id: Date.now(), text: inputValue }; 
+    const newElement = { id: Date.now(), text: inputValue };
     setContent([...content, newElement]);
     setInputValue("");
   }
@@ -50,3 +56,4 @@ function App() {
 }
 
 export default App;
+
